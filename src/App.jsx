@@ -1,5 +1,6 @@
 import React from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
+import { Hero } from "./components/Hero";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -25,8 +26,15 @@ function Nav() {
     >
       <div className="container nav__inner">
         <a href="#" className="brand">
-          <span className="brand__mark" />
-          <span>Studio Nord</span>
+          <span
+            className="brand__mark"
+            style={{
+              background:
+                "linear-gradient(135deg, #FA93FA, #C967E8, #983AD6)",
+              boxShadow: "0 6px 20px -6px rgba(201,103,232,0.7)",
+            }}
+          />
+          <span>Steven Berg</span>
         </a>
         <div className="nav__links">
           <a href="#leistungen">Leistungen</a>
@@ -39,113 +47,6 @@ function Nav() {
         </a>
       </div>
     </motion.nav>
-  );
-}
-
-function AnimatedGradient() {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 600], [0, 120]);
-  return (
-    <motion.div
-      className="hero__gradient"
-      style={{ y }}
-      animate={{
-        backgroundPosition: [
-          "20% 30%, 70% 40%, 50% 80%",
-          "30% 60%, 60% 20%, 40% 60%",
-          "20% 30%, 70% 40%, 50% 80%",
-        ],
-      }}
-      transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-    />
-  );
-}
-
-function Hero() {
-  return (
-    <section className="hero">
-      <AnimatedGradient />
-      <div className="container hero__inner">
-        <motion.div
-          className="hero__eyebrow"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Buchungen ab Mai 2026 möglich
-        </motion.div>
-
-        <motion.h1
-          className="hero__title"
-          variants={stagger}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.span variants={fadeUp} style={{ display: "block" }}>
-            Webdesign, das deine
-          </motion.span>
-          <motion.span variants={fadeUp} style={{ display: "block" }}>
-            Marke <em>unverwechselbar</em> macht.
-          </motion.span>
-        </motion.h1>
-
-        <motion.p
-          className="hero__sub"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-        >
-          Wir entwerfen und entwickeln moderne Websites für ambitionierte Unternehmen –
-          schnell, ästhetisch und konversionsstark. Vom Konzept bis zum Launch in 4 Wochen.
-        </motion.p>
-
-        <motion.div
-          className="hero__cta"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.65 }}
-        >
-          <motion.a
-            href="#preise"
-            className="btn btn--primary"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Pakete entdecken
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </motion.a>
-          <motion.a
-            href="#leistungen"
-            className="btn btn--ghost"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Wie wir arbeiten
-          </motion.a>
-        </motion.div>
-
-        <motion.div
-          className="hero__meta"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={stagger}
-        >
-          {[
-            ["120+", "Launches"],
-            ["4,9 / 5", "Kundenbewertung"],
-            ["28 Tage", "Ø bis Go-Live"],
-          ].map(([value, label], i) => (
-            <motion.div className="hero__metric" key={label} variants={fadeUp} custom={i}>
-              <strong>{value}</strong>
-              <span>{label}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
   );
 }
 
@@ -214,7 +115,7 @@ function Features() {
             Drei Säulen für deinen digitalen Auftritt.
           </motion.h2>
           <motion.p className="section__sub" variants={fadeUp}>
-            Strategisches Design, technische Exzellenz und messbares Wachstum –
+            Strategisches Design, technische Exzellenz und messbares Wachstum —
             in jedem Projekt.
           </motion.p>
         </motion.div>
@@ -230,22 +131,22 @@ function Features() {
             i={0}
             icon={featureIcons.design}
             title="Maßgeschneidertes Design"
-            desc="Individuelle Entwürfe, die deine Markenidentität präzise transportieren – kein Template, kein Kompromiss."
+            desc="Individuelle Entwürfe, die deine Markenidentität präzise transportieren — kein Template, kein Kompromiss."
             items={["Branding & Visual Identity", "UX/UI bis ins Detail", "Animations & Interaktionen"]}
           />
           <Feature
             i={1}
             icon={featureIcons.speed}
             title="Performance ohne Kompromiss"
-            desc="Top Core-Web-Vitals, schnelle Ladezeiten und optimierter Code. Deine Website fühlt sich an wie eine App."
+            desc="Top Core-Web-Vitals, schnelle Ladezeiten und optimierter Code. Deine Website fühlt sich an wie eine native App."
             items={["100/100 Lighthouse-Score möglich", "Edge Hosting & CDN", "Saubere, wartbare Codebasis"]}
           />
           <Feature
             i={2}
             icon={featureIcons.growth}
             title="Conversion & SEO"
-            desc="Wir bauen Websites, die Besucher zu Kunden machen – mit klarer Struktur und technischem SEO ab Tag eins."
-            items={["A/B-getestete Strukturen", "Technisches SEO", "Analytics & Tracking"]}
+            desc="Wir bauen Websites, die Besucher zu Kunden machen — mit klarer Struktur und technischem SEO ab Tag eins."
+            items={["A/B-getestete Strukturen", "Technisches SEO on-page", "Analytics & Tracking-Setup"]}
           />
         </motion.div>
       </div>
@@ -383,7 +284,7 @@ function Pricing() {
 
 const testimonials = [
   {
-    text: "Studio Nord hat unsere Marke nicht nur visuell, sondern strategisch auf ein neues Niveau gehoben. Unser Lead-Volumen hat sich verdoppelt.",
+    text: "Steven Berg hat unsere Marke nicht nur visuell, sondern strategisch auf ein neues Niveau gehoben. Unser Lead-Volumen hat sich mehr als verdoppelt.",
     name: "Lena Hofmann",
     role: "CMO, Helix Industries",
     initials: "LH",
@@ -395,7 +296,7 @@ const testimonials = [
     initials: "MW",
   },
   {
-    text: "Premium-Qualität ohne Agentur-Aufschlag. Animationen, Performance, Liebe zum Detail – einfach erstklassig.",
+    text: "Premium-Qualität ohne Agentur-Overhead. Animationen, Performance, Liebe zum Detail — absolut erstklassig.",
     name: "Sophia Becker",
     role: "Head of Design, Norra",
     initials: "SB",
@@ -452,7 +353,15 @@ function Testimonials() {
               <Stars />
               <p className="quote__text">„{t.text}"</p>
               <div className="quote__author">
-                <div className="quote__avatar">{t.initials}</div>
+                <div
+                  className="quote__avatar"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #FA93FA, #C967E8, #983AD6)",
+                  }}
+                >
+                  {t.initials}
+                </div>
                 <div>
                   <div className="quote__name">{t.name}</div>
                   <div className="quote__role">{t.role}</div>
@@ -480,7 +389,11 @@ function CTA() {
           <motion.div
             className="cta__glow"
             animate={{
-              backgroundPosition: ["25% 30%, 75% 50%", "55% 60%, 35% 30%", "25% 30%, 75% 50%"],
+              backgroundPosition: [
+                "25% 30%, 75% 50%",
+                "55% 60%, 35% 30%",
+                "25% 30%, 75% 50%",
+              ],
             }}
             transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -492,13 +405,22 @@ function CTA() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              Bereit für eine Website, <br /> die <em style={{
-                background: "linear-gradient(135deg, #b69cff, #7df9ff, #ff8fb1)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-                fontStyle: "italic",
-              }}>wirklich verkauft</em>?
+              Bereit für eine Website,{" "}
+              <br />
+              die{" "}
+              <em
+                style={{
+                  background:
+                    "linear-gradient(135deg, #FA93FA, #C967E8, #983AD6)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                  fontStyle: "italic",
+                }}
+              >
+                wirklich verkauft
+              </em>
+              ?
             </motion.h2>
             <motion.p
               className="cta__sub"
@@ -507,8 +429,9 @@ function CTA() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
-              Buche ein 20-minütiges Erstgespräch – kostenlos und unverbindlich.
-              Wir besprechen dein Projekt und zeigen, wie wir dich nach vorne bringen.
+              Buche ein 15-minütiges Erstgespräch — kostenlos und unverbindlich.
+              Wir besprechen dein Projekt und zeigen, wie wir dich nach vorne
+              bringen.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -517,12 +440,12 @@ function CTA() {
               transition={{ duration: 0.7, delay: 0.3 }}
             >
               <motion.a
-                href="mailto:hallo@studionord.de"
+                href="mailto:hallo@steven-berg-marketing.de"
                 className="btn btn--primary"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
               >
-                Erstgespräch buchen
+                15-min Call buchen
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
@@ -539,7 +462,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
-        <div>© {new Date().getFullYear()} Studio Nord — Webdesign aus Hamburg</div>
+        <div>© {new Date().getFullYear()} Steven Berg Marketing — Professionelles Webdesign</div>
         <div style={{ display: "flex", gap: 24 }}>
           <a href="#">Impressum</a>
           <a href="#">Datenschutz</a>
