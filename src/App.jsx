@@ -1,377 +1,248 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+/* ── animation presets ── */
 const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 36 },
   visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
+    opacity: 1, y: 0,
+    transition: { duration: 0.75, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
   }),
 };
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } } };
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
-};
-
+/* ══════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════ */
 function Nav() {
   return (
-    <motion.nav
-      className="nav"
-      initial={{ y: -20, opacity: 0 }}
+    <motion.nav className="nav"
+      initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="container nav__inner">
         <a href="#" className="brand">
           <span className="brand__mark" />
-          <span>Studio Nord</span>
+          <span>Steven Berg</span>
+          <span className="brand__tag">Webdesign</span>
         </a>
         <div className="nav__links">
-          <a href="#leistungen">Leistungen</a>
-          <a href="#preise">Preise</a>
-          <a href="#stimmen">Stimmen</a>
+          <a href="#pakete">Pakete</a>
+          <a href="#warum">Über mich</a>
+          <a href="#referenzen">Referenzen</a>
           <a href="#kontakt">Kontakt</a>
         </div>
-        <a href="#kontakt" className="nav__cta">
-          Projekt starten →
-        </a>
+        <motion.a href="#kontakt" className="nav__cta"
+          whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+          Kostenlos beraten lassen →
+        </motion.a>
       </div>
     </motion.nav>
   );
 }
 
-function AnimatedGradient() {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 600], [0, 120]);
-  return (
-    <motion.div
-      className="hero__gradient"
-      style={{ y }}
-      animate={{
-        backgroundPosition: [
-          "20% 30%, 70% 40%, 50% 80%",
-          "30% 60%, 60% 20%, 40% 60%",
-          "20% 30%, 70% 40%, 50% 80%",
-        ],
-      }}
-      transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-    />
-  );
-}
-
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
 function Hero() {
+  const { scrollY } = useScroll();
+  const blobY = useTransform(scrollY, [0, 500], [0, 90]);
+
   return (
     <section className="hero">
-      <AnimatedGradient />
-      <div className="container hero__inner">
-        <motion.div
-          className="hero__eyebrow"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Buchungen ab Mai 2026 möglich
-        </motion.div>
+      {/* animated blobs */}
+      <motion.div className="hero__blobs" style={{ y: blobY }}
+        animate={{ backgroundPosition: ["20% 40%, 75% 30%", "45% 65%, 50% 20%", "20% 40%, 75% 30%"] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-        <motion.h1
-          className="hero__title"
-          variants={stagger}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.span variants={fadeUp} style={{ display: "block" }}>
-            Webdesign, das deine
-          </motion.span>
-          <motion.span variants={fadeUp} style={{ display: "block" }}>
-            Marke <em>unverwechselbar</em> macht.
-          </motion.span>
-        </motion.h1>
-
-        <motion.p
-          className="hero__sub"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-        >
-          Wir entwerfen und entwickeln moderne Websites für ambitionierte Unternehmen –
-          schnell, ästhetisch und konversionsstark. Vom Konzept bis zum Launch in 4 Wochen.
-        </motion.p>
-
-        <motion.div
-          className="hero__cta"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.65 }}
-        >
-          <motion.a
-            href="#preise"
-            className="btn btn--primary"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Pakete entdecken
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </motion.a>
-          <motion.a
-            href="#leistungen"
-            className="btn btn--ghost"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Wie wir arbeiten
-          </motion.a>
-        </motion.div>
-
-        <motion.div
-          className="hero__meta"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={stagger}
-        >
-          {[
-            ["120+", "Launches"],
-            ["4,9 / 5", "Kundenbewertung"],
-            ["28 Tage", "Ø bis Go-Live"],
-          ].map(([value, label], i) => (
-            <motion.div className="hero__metric" key={label} variants={fadeUp} custom={i}>
-              <strong>{value}</strong>
-              <span>{label}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-const featureIcons = {
-  design: (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <path d="M12 3l9 9-9 9-9-9 9-9z" />
-      <path d="M12 3v18M3 12h18" />
-    </svg>
-  ),
-  speed: (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <path d="M13 2L3 14h7l-1 8 11-12h-7l1-8z" />
-    </svg>
-  ),
-  growth: (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <path d="M3 17l6-6 4 4 8-8" />
-      <path d="M14 7h7v7" />
-    </svg>
-  ),
-};
-
-function Feature({ icon, title, desc, items, i }) {
-  const onMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
-  return (
-    <motion.div
-      className="feature"
-      onMouseMove={onMove}
-      variants={fadeUp}
-      custom={i}
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 220, damping: 22 }}
-    >
-      <div className="feature__icon">{icon}</div>
-      <h3 className="feature__title">{title}</h3>
-      <p className="feature__desc">{desc}</p>
-      <ul className="feature__list">
-        {items.map((it) => (
-          <li key={it}>{it}</li>
-        ))}
-      </ul>
-    </motion.div>
-  );
-}
-
-function Features() {
-  return (
-    <section className="section" id="leistungen">
-      <div className="container">
-        <motion.div
-          className="section__head"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={stagger}
-        >
-          <motion.span className="section__eyebrow" variants={fadeUp}>
-            Was wir liefern
-          </motion.span>
-          <motion.h2 className="section__title" variants={fadeUp}>
-            Drei Säulen für deinen digitalen Auftritt.
-          </motion.h2>
-          <motion.p className="section__sub" variants={fadeUp}>
-            Strategisches Design, technische Exzellenz und messbares Wachstum –
-            in jedem Projekt.
+      <div className="container hero__grid">
+        {/* ── text ── */}
+        <motion.div className="hero__text"
+          initial="hidden" animate="visible" variants={stagger}>
+          <motion.div className="eyebrow" variants={fadeUp}>
+            <span className="dot" /> Webdesign der Premiumklasse
+          </motion.div>
+          <motion.h1 className="hero__title" variants={fadeUp}>
+            Websites, die<br />
+            <em className="grad-text">verkaufen.</em>
+          </motion.h1>
+          <motion.p className="hero__sub" variants={fadeUp}>
+            Ich entwerfe und entwickle Websites für Unternehmen, die online
+            wachsen wollen – schnell, individuell und auf höchstem Niveau.
+            Vom einfachen Onepager bis zur 3D-Premium-Experience.
           </motion.p>
+          <motion.div className="hero__btns" variants={fadeUp}>
+            <motion.a href="#kontakt" className="btn btn--grad"
+              whileHover={{ scale: 1.04, boxShadow: "0 20px 50px -10px rgba(155,92,246,0.55)" }}
+              whileTap={{ scale: 0.97 }}>
+              Kostenloses Erstgespräch
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </motion.a>
+            <motion.a href="#pakete" className="btn btn--ghost"
+              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+              Pakete ansehen
+            </motion.a>
+          </motion.div>
+
+          <motion.div className="hero__stats" variants={stagger}>
+            {[["50+", "Projekte"], ["4,9★", "Bewertung"], ["48h", "Erste Entwürfe"]].map(([v, l], i) => (
+              <motion.div className="stat" key={l} variants={fadeUp} custom={i}>
+                <strong>{v}</strong>
+                <span>{l}</span>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
 
-        <motion.div
-          className="features"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={stagger}
-        >
-          <Feature
-            i={0}
-            icon={featureIcons.design}
-            title="Maßgeschneidertes Design"
-            desc="Individuelle Entwürfe, die deine Markenidentität präzise transportieren – kein Template, kein Kompromiss."
-            items={["Branding & Visual Identity", "UX/UI bis ins Detail", "Animations & Interaktionen"]}
-          />
-          <Feature
-            i={1}
-            icon={featureIcons.speed}
-            title="Performance ohne Kompromiss"
-            desc="Top Core-Web-Vitals, schnelle Ladezeiten und optimierter Code. Deine Website fühlt sich an wie eine App."
-            items={["100/100 Lighthouse-Score möglich", "Edge Hosting & CDN", "Saubere, wartbare Codebasis"]}
-          />
-          <Feature
-            i={2}
-            icon={featureIcons.growth}
-            title="Conversion & SEO"
-            desc="Wir bauen Websites, die Besucher zu Kunden machen – mit klarer Struktur und technischem SEO ab Tag eins."
-            items={["A/B-getestete Strukturen", "Technisches SEO", "Analytics & Tracking"]}
-          />
+        {/* ── photo ── */}
+        <motion.div className="hero__photo-wrap"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+          <div className="hero__photo-glow" />
+          <div className="hero__photo-frame">
+            {/* Replace /steven.jpg with your photo — put it in /public/steven.jpg */}
+            <img src="/steven.jpg" alt="Steven Berg – Webdesigner"
+              className="hero__photo"
+              onError={e => { e.target.style.display = "none"; e.target.nextElementSibling.style.display = "flex"; }} />
+            <div className="hero__photo-placeholder" style={{ display: "none" }}>
+              <span>SB</span>
+              <small>Foto unter /public/steven.jpg ablegen</small>
+            </div>
+          </div>
+          <div className="hero__photo-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+            Persönlicher Ansprechpartner
+          </div>
         </motion.div>
       </div>
     </section>
   );
 }
 
-function Check() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-      <path d="M5 12l5 5L20 7" />
-    </svg>
-  );
-}
-
-const plans = [
+/* ══════════════════════════════════════════════
+   PAKETE
+══════════════════════════════════════════════ */
+const pakete = [
   {
-    name: "Starter",
-    tag: "Für Solo-Unternehmer & Freiberufler",
-    price: "1.890",
-    cadence: "einmalig",
-    cta: "Starter wählen",
-    featured: false,
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+        <rect x="2" y="3" width="20" height="14" rx="2" />
+        <path d="M8 21h8M12 17v4" />
+      </svg>
+    ),
+    color: "#4B8EF5",
+    name: "Landingpage & Onepager",
+    pitch: "Maximale Wirkung. Fokussiert. Konversionsstark.",
+    desc: "Eine durchdachte, conversion-optimierte Seite für dein Produkt oder deine Dienstleistung. Kein Ablenkungsrauschen – nur ein klarer Weg zur Anfrage.",
+    ideal: "Produkt-Launches, Dienstleistungen, Kampagnen, Events",
     features: [
-      "One-Pager bis 5 Sektionen",
-      "Individuelles Design",
-      "Mobile-optimiert",
-      "Basic SEO Setup",
-      "Hosting-Setup",
-      "2 Wochen Launch-Zeit",
+      "Individuelles One-Page-Design",
+      "CTA-Optimierung & Funnel-Struktur",
+      "Mobile-First & blitzschnell",
+      "Formular-Integration",
+      "Basic SEO-Setup",
     ],
+    ref: '„Unsere Anfragen haben sich durch die neue Landingpage verdoppelt.“',
   },
   {
-    name: "Professional",
-    tag: "Für wachsende KMU & Studios",
-    price: "3.890",
-    cadence: "einmalig",
-    cta: "Professional wählen",
-    featured: true,
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    ),
+    color: "#9B5CF6",
+    name: "Unternehmenswebseite",
+    pitch: "Dein kompletter digitaler Auftritt.",
+    desc: "Die professionelle Webpräsenz für dein Unternehmen. Mehrere Unterseiten, klare Struktur und integrierte Funnels, die Besucher automatisch zu Anfragen machen.",
+    ideal: "KMU, Agenturen, Dienstleister, B2B-Unternehmen",
     features: [
-      "Bis zu 8 Unterseiten",
-      "Custom Animationen",
-      "CMS-Anbindung",
-      "Erweitertes SEO & Analytics",
-      "Conversion-Optimierung",
+      "Mehrere individuelle Unterseiten",
+      "Funnel-Integration & Lead-Capture",
+      "Dienstleistungs- & Über-Uns-Seiten",
+      "Google Analytics & Tracking",
       "30 Tage Support inklusive",
     ],
+    ref: '„Kunden sprechen uns jetzt aktiv auf unsere Webseite an."',
+    featured: true,
   },
   {
-    name: "Premium",
-    tag: "Für Marken mit Anspruch",
-    price: "ab 7.500",
-    cadence: "Projektpreis",
-    cta: "Beratung anfragen",
-    featured: false,
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+      </svg>
+    ),
+    color: "#EC4899",
+    name: "High-Premium Experience",
+    pitch: "Apple-Niveau. Kein Kompromiss.",
+    desc: "Die Königsdisziplin. 3D-Elemente, individuelle Scroll-Animationen, jedes Detail auf höchstem Niveau gestaltet. Für Marken, die unverwechselbar sein wollen.",
+    ideal: "Premium-Brands, Scale-Ups, Marken die führen wollen",
     features: [
-      "Komplexe Architekturen",
-      "Maßgefertigte Interaktionen",
-      "Headless CMS / Shop",
-      "Performance-Audit",
-      "A/B-Testing Setup",
-      "12 Monate Pflege & Support",
+      "100% individuelles Design",
+      "3D-Elemente & Scroll-Animationen",
+      "Custom Interaktionen & Storytelling",
+      "Performance auf höchstem Niveau",
+      "Langfristige Betreuung & Pflege",
     ],
+    ref: '„Das Ergebnis hat selbst unsere Erwartungen übertroffen."',
   },
 ];
 
-function Pricing() {
+function Pakete() {
   return (
-    <section className="section" id="preise">
+    <section className="section" id="pakete">
       <div className="container">
-        <motion.div
-          className="section__head"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={stagger}
-        >
-          <motion.span className="section__eyebrow" variants={fadeUp}>
-            Pakete & Preise
-          </motion.span>
+        <motion.div className="section__head"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={stagger}>
+          <motion.span className="section__eyebrow" variants={fadeUp}>Leistungen</motion.span>
           <motion.h2 className="section__title" variants={fadeUp}>
-            Klare Preise. Keine Überraschungen.
+            Das richtige Paket für <em className="grad-text">dein Ziel.</em>
           </motion.h2>
           <motion.p className="section__sub" variants={fadeUp}>
-            Wähle das Paket, das zu dir passt. Alle Preise verstehen sich zzgl. MwSt.
+            Drei klare Lösungen – von der fokussierten Landingpage bis zur individuellen Premium-Experience.
           </motion.p>
         </motion.div>
 
-        <motion.div
-          className="pricing"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={stagger}
-        >
-          {plans.map((p, i) => (
+        <motion.div className="pakete-grid"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+          {pakete.map((p, i) => (
             <motion.div
               key={p.name}
-              className={`plan ${p.featured ? "plan--featured" : ""}`}
-              variants={fadeUp}
-              custom={i}
-              whileHover={{ y: p.featured ? -16 : -6 }}
-              transition={{ type: "spring", stiffness: 220, damping: 22 }}
+              className={`paket ${p.featured ? "paket--featured" : ""}`}
+              variants={fadeUp} custom={i}
+              whileHover={{ y: -8 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              style={{ "--accent": p.color }}
             >
-              {p.featured && <span className="plan__badge">Beliebt</span>}
-              <div className="plan__name">{p.name}</div>
-              <div className="plan__tag">{p.tag}</div>
-              <div className="plan__price">
-                <strong>€ {p.price}</strong>
-                <span>{p.cadence}</span>
+              {p.featured && <span className="paket__badge">Beliebteste Wahl</span>}
+              <div className="paket__icon" style={{ color: p.color, borderColor: `${p.color}33`, background: `${p.color}11` }}>
+                {p.icon}
               </div>
-              <ul className="plan__features">
-                {p.features.map((f) => (
+              <h3 className="paket__name">{p.name}</h3>
+              <p className="paket__pitch" style={{ color: p.color }}>{p.pitch}</p>
+              <p className="paket__desc">{p.desc}</p>
+              <div className="paket__ideal">
+                <span>Ideal für:</span> {p.ideal}
+              </div>
+              <ul className="paket__list">
+                {p.features.map(f => (
                   <li key={f}>
-                    <Check />
-                    <span>{f}</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: p.color }}><polyline points="20 6 9 17 4 12" /></svg>
+                    {f}
                   </li>
                 ))}
               </ul>
-              <motion.a
-                href="#kontakt"
-                className={`btn plan__cta ${p.featured ? "btn--primary" : "plan__cta--soft"}`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {p.cta}
+              <p className="paket__ref">{p.ref}</p>
+              <motion.a href="#kontakt" className="btn btn--paket"
+                style={{ background: `${p.color}18`, color: p.color, borderColor: `${p.color}44` }}
+                whileHover={{ background: p.color, color: "#fff" }}
+                transition={{ duration: 0.2 }}>
+                Paket anfragen →
               </motion.a>
             </motion.div>
           ))}
@@ -381,81 +252,116 @@ function Pricing() {
   );
 }
 
-const testimonials = [
-  {
-    text: "Studio Nord hat unsere Marke nicht nur visuell, sondern strategisch auf ein neues Niveau gehoben. Unser Lead-Volumen hat sich verdoppelt.",
-    name: "Lena Hofmann",
-    role: "CMO, Helix Industries",
-    initials: "LH",
-  },
-  {
-    text: "Der gesamte Prozess war strukturiert, schnell und überraschend angenehm. Das Ergebnis: eine Website, die uns ernsthafte Aufträge bringt.",
-    name: "Marcus Weber",
-    role: "Gründer, Weber & Co.",
-    initials: "MW",
-  },
-  {
-    text: "Premium-Qualität ohne Agentur-Aufschlag. Animationen, Performance, Liebe zum Detail – einfach erstklassig.",
-    name: "Sophia Becker",
-    role: "Head of Design, Norra",
-    initials: "SB",
-  },
+/* ══════════════════════════════════════════════
+   WARUM ICH
+══════════════════════════════════════════════ */
+const gruende = [
+  { icon: "👤", title: "Persönlicher Ansprechpartner", desc: "Kein Call-Center, kein Ticket-System. Du arbeitest direkt mit mir – ohne Umwege." },
+  { icon: "⚡", title: "Erste Entwürfe in 48h", desc: "Schnelle Umsetzung ist mein Versprechen. Du wartest nicht wochenlang auf erste Ergebnisse." },
+  { icon: "🎯", title: "Ergebnisorientiertes Design", desc: "Jede Seite ist darauf ausgelegt, Besucher in Kunden zu verwandeln – nicht nur schön auszusehen." },
+  { icon: "💬", title: "Direkter Austausch", desc: "Transparente Kommunikation, klare Timelines, keine Überraschungen – von Anfang bis zum Launch." },
+  { icon: "🚀", title: "Modernste Technologien", desc: "Zukunftssichere, wartbare Lösungen mit Top-Performance und schnellen Ladezeiten." },
+  { icon: "✨", title: "100% individuell", desc: "Keine Templates. Jede Webseite ist ein Unikat, das perfekt zu deiner Marke passt." },
 ];
 
-function Stars() {
+function WarumIch() {
   return (
-    <div className="quote__stars">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2l2.9 6.9L22 10l-5.5 4.7L18 22l-6-3.6L6 22l1.5-7.3L2 10l7.1-1.1L12 2z" />
-        </svg>
-      ))}
-    </div>
+    <section className="section section--alt" id="warum">
+      <div className="container">
+        <motion.div className="section__head"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={stagger}>
+          <motion.span className="section__eyebrow" variants={fadeUp}>Warum ich?</motion.span>
+          <motion.h2 className="section__title" variants={fadeUp}>
+            Was dich mit mir <em className="grad-text">nach vorne bringt.</em>
+          </motion.h2>
+          <motion.p className="section__sub" variants={fadeUp}>
+            Als freier Webdesigner kombiniere ich Agentur-Qualität mit dem direkten,
+            persönlichen Service eines Einzelunternehmers.
+          </motion.p>
+        </motion.div>
+
+        <motion.div className="gruende-grid"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+          {gruende.map((g, i) => (
+            <motion.div className="grund" key={g.title}
+              variants={fadeUp} custom={i}
+              whileHover={{ y: -5, borderColor: "rgba(155,92,246,0.4)" }}
+              transition={{ type: "spring", stiffness: 200, damping: 22 }}>
+              <span className="grund__icon">{g.icon}</span>
+              <h4 className="grund__title">{g.title}</h4>
+              <p className="grund__desc">{g.desc}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
-function Testimonials() {
+/* ══════════════════════════════════════════════
+   REFERENZEN
+══════════════════════════════════════════════ */
+const referenzen = [
+  {
+    text: "Steven hat unsere neue Landingpage in weniger als zwei Wochen umgesetzt. Das Design ist genau das, was wir uns vorgestellt haben – und die Anfragen haben sich seither verdoppelt.",
+    name: "Julia Braun",
+    role: "Inhaberin, FitCoach Studio München",
+    paket: "Landingpage",
+    color: "#4B8EF5",
+    initials: "JB",
+  },
+  {
+    text: "Endlich eine Webseite, auf die ich stolz bin. Kunden und Partner sprechen mich aktiv darauf an. Steven war immer erreichbar und hat wirklich mitgedacht.",
+    name: "Markus Steiner",
+    role: "Geschäftsführer, Steiner Immobilien",
+    paket: "Unternehmenswebseite",
+    color: "#9B5CF6",
+    initials: "MS",
+  },
+  {
+    text: "Wir wollten eine Webseite die uns von der Konkurrenz abhebt – Apple-Level. Das Ergebnis hat selbst unsere hohen Erwartungen noch übertroffen. Absolute Empfehlung.",
+    name: "Sophie Klar",
+    role: "CMO, Luxe Interiors GmbH",
+    paket: "High-Premium",
+    color: "#EC4899",
+    initials: "SK",
+  },
+];
+
+function Referenzen() {
   return (
-    <section className="section" id="stimmen">
+    <section className="section" id="referenzen">
       <div className="container">
-        <motion.div
-          className="section__head"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={stagger}
-        >
-          <motion.span className="section__eyebrow" variants={fadeUp}>
-            Stimmen unserer Kunden
-          </motion.span>
+        <motion.div className="section__head"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={stagger}>
+          <motion.span className="section__eyebrow" variants={fadeUp}>Kundenstimmen</motion.span>
           <motion.h2 className="section__title" variants={fadeUp}>
-            Marken, die uns vertrauen.
+            Was meine Kunden <em className="grad-text">sagen.</em>
           </motion.h2>
         </motion.div>
 
-        <motion.div
-          className="testimonials"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={stagger}
-        >
-          {testimonials.map((t, i) => (
-            <motion.div
-              className="quote"
-              key={t.name}
-              variants={fadeUp}
-              custom={i}
+        <motion.div className="ref-grid"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+          {referenzen.map((r, i) => (
+            <motion.div className="ref-card" key={r.name}
+              variants={fadeUp} custom={i}
               whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 220, damping: 22 }}
-            >
-              <Stars />
-              <p className="quote__text">„{t.text}"</p>
-              <div className="quote__author">
-                <div className="quote__avatar">{t.initials}</div>
+              transition={{ type: "spring", stiffness: 200, damping: 22 }}
+              style={{ "--rc": r.color }}>
+              <div className="ref-card__top">
+                <div className="ref-stars">{"★★★★★"}</div>
+                <span className="ref-badge" style={{ color: r.color, background: `${r.color}15`, border: `1px solid ${r.color}30` }}>
+                  {r.paket}
+                </span>
+              </div>
+              <p className="ref-text">„{r.text}"</p>
+              <div className="ref-author">
+                <div className="ref-avatar" style={{ background: `linear-gradient(135deg, ${r.color}, ${r.color}88)` }}>
+                  {r.initials}
+                </div>
                 <div>
-                  <div className="quote__name">{t.name}</div>
-                  <div className="quote__role">{t.role}</div>
+                  <div className="ref-name">{r.name}</div>
+                  <div className="ref-role">{r.role}</div>
                 </div>
               </div>
             </motion.div>
@@ -466,99 +372,173 @@ function Testimonials() {
   );
 }
 
-function CTA() {
+/* ══════════════════════════════════════════════
+   KONTAKT
+══════════════════════════════════════════════ */
+function Kontakt() {
+  const [form, setForm] = useState({ name: "", phone: "", website: "", message: "", agb: false });
+  const [status, setStatus] = useState("idle"); // idle | sending | done | error
+
+  const handle = e => {
+    const { name, value, type, checked } = e.target;
+    setForm(f => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+  };
+
+  const submit = async e => {
+    e.preventDefault();
+    if (!form.name || !form.phone || !form.agb) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/steven.berg92@googlemail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          Name: form.name,
+          Telefon: form.phone,
+          "Aktuelle Website": form.website || "–",
+          "Vorhaben / Anliegen": form.message || "–",
+          _subject: "Neue Anfrage – Kostenloses Beratungsgespräch",
+          _captcha: "false",
+        }),
+      });
+      setStatus(res.ok ? "done" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
+
   return (
-    <section className="cta" id="kontakt">
+    <section className="section section--alt" id="kontakt">
       <div className="container">
-        <motion.div
-          className="cta__card"
+        <motion.div className="section__head"
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={stagger}>
+          <motion.span className="section__eyebrow" variants={fadeUp}>Kontakt</motion.span>
+          <motion.h2 className="section__title" variants={fadeUp}>
+            Bereit für deine <em className="grad-text">neue Website?</em>
+          </motion.h2>
+          <motion.p className="section__sub" variants={fadeUp}>
+            Trag dich ein – ich melde mich persönlich für ein kostenloses,
+            10–15-minütiges Erstgespräch bei dir.
+          </motion.p>
+        </motion.div>
+
+        <motion.div className="kontakt-wrap"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.div
-            className="cta__glow"
-            animate={{
-              backgroundPosition: ["25% 30%, 75% 50%", "55% 60%, 35% 30%", "25% 30%, 75% 50%"],
-            }}
-            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <div className="cta__content">
-            <motion.h2
-              className="cta__title"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-            >
-              Bereit für eine Website, <br /> die <em style={{
-                background: "linear-gradient(135deg, #b69cff, #7df9ff, #ff8fb1)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-                fontStyle: "italic",
-              }}>wirklich verkauft</em>?
-            </motion.h2>
-            <motion.p
-              className="cta__sub"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              Buche ein 20-minütiges Erstgespräch – kostenlos und unverbindlich.
-              Wir besprechen dein Projekt und zeigen, wie wir dich nach vorne bringen.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              <motion.a
-                href="mailto:hallo@studionord.de"
-                className="btn btn--primary"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Erstgespräch buchen
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </motion.a>
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+          {status === "done" ? (
+            <motion.div className="kontakt-success"
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}>
+              <div className="success-icon">✓</div>
+              <h3>Vielen Dank für deine Anfrage!</h3>
+              <p>Ich werde mich binnen 48 Stunden persönlich bei dir melden.</p>
             </motion.div>
-          </div>
+          ) : (
+            <form className="kontakt-form" onSubmit={submit} noValidate>
+              <div className="form-row">
+                <div className="form-field">
+                  <label htmlFor="name">
+                    Name <span className="req">*</span>
+                  </label>
+                  <input
+                    id="name" name="name" type="text"
+                    placeholder="Dein vollständiger Name"
+                    value={form.name} onChange={handle} required
+                  />
+                </div>
+                <div className="form-field">
+                  <label htmlFor="phone">
+                    Telefonnummer <span className="req">*</span>
+                  </label>
+                  <input
+                    id="phone" name="phone" type="tel"
+                    placeholder="+49 ..."
+                    value={form.phone} onChange={handle} required
+                  />
+                </div>
+              </div>
+              <div className="form-field">
+                <label htmlFor="website">Aktuelle Website <span className="opt">(optional)</span></label>
+                <input
+                  id="website" name="website" type="url"
+                  placeholder="https://deine-website.de"
+                  value={form.website} onChange={handle}
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="message">Dein Vorhaben / Besondere Anliegen</label>
+                <textarea
+                  id="message" name="message" rows={4}
+                  placeholder="Was hast du vor? Was ist dir besonders wichtig?"
+                  value={form.message} onChange={handle}
+                />
+              </div>
+              <label className="form-check">
+                <input type="checkbox" name="agb" checked={form.agb} onChange={handle} required />
+                <span>
+                  Ich bin mit der Verarbeitung meiner Daten zur Kontaktaufnahme einverstanden
+                  und akzeptiere die <a href="#">AGB & Datenschutzhinweise</a>. <span className="req">*</span>
+                </span>
+              </label>
+              {status === "error" && (
+                <p className="form-error">
+                  Fehler beim Senden. Bitte schreib mir direkt an{" "}
+                  <a href="mailto:steven.berg92@googlemail.com">steven.berg92@googlemail.com</a>.
+                </p>
+              )}
+              <motion.button type="submit" className="btn btn--grad btn--submit"
+                disabled={status === "sending"}
+                whileHover={{ scale: 1.02, boxShadow: "0 20px 50px -10px rgba(155,92,246,0.55)" }}
+                whileTap={{ scale: 0.98 }}>
+                {status === "sending" ? "Wird gesendet …" : "Kostenloses Erstgespräch anfragen →"}
+              </motion.button>
+              <p className="form-hint">Pflichtfelder mit <span className="req">*</span> · Keine Kosten, keine Verpflichtungen</p>
+            </form>
+          )}
         </motion.div>
       </div>
     </section>
   );
 }
 
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
 function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
-        <div>© {new Date().getFullYear()} Studio Nord — Webdesign aus Hamburg</div>
-        <div style={{ display: "flex", gap: 24 }}>
+        <div className="brand">
+          <span className="brand__mark" />
+          <span>Steven Berg Webdesign</span>
+        </div>
+        <div className="footer__links">
           <a href="#">Impressum</a>
           <a href="#">Datenschutz</a>
+          <a href="mailto:steven.berg92@googlemail.com">steven.berg92@googlemail.com</a>
         </div>
+        <p className="footer__copy">© {new Date().getFullYear()} Steven Berg</p>
       </div>
     </footer>
   );
 }
 
+/* ══════════════════════════════════════════════
+   APP
+══════════════════════════════════════════════ */
 export default function App() {
   return (
     <>
       <Nav />
       <main>
         <Hero />
-        <Features />
-        <Pricing />
-        <Testimonials />
-        <CTA />
+        <Pakete />
+        <WarumIch />
+        <Referenzen />
+        <Kontakt />
       </main>
       <Footer />
     </>
