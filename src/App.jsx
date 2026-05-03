@@ -96,23 +96,26 @@ function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* ── photo ── */}
-        <motion.div className="hero__photo-wrap"
+        {/* ── video on right (desktop) / background (mobile) ── */}
+        <motion.div className="hero__video-wrap"
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}>
-          <div className="hero__photo-glow" />
-          <div className="hero__photo-frame">
-            {/* Replace /steven.jpg with your photo — put it in /public/steven.jpg */}
-            <img src="/steven.jpg" alt="Steven Berg – Webdesigner"
-              className="hero__photo"
-              onError={e => { e.target.style.display = "none"; e.target.nextElementSibling.style.display = "flex"; }} />
-            <div className="hero__photo-placeholder" style={{ display: "none" }}>
-              <span>SB</span>
-              <small>Foto unter /public/steven.jpg ablegen</small>
-            </div>
+          <div className="hero__video-glow" />
+          <div className="hero__video-frame">
+            <video
+              className="hero__video"
+              src="/hero.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/steven.jpg"
+            />
+            <div className="hero__video-overlay" />
           </div>
-          <div className="hero__photo-badge">
+          <div className="hero__video-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
             Persönlicher Ansprechpartner
           </div>
