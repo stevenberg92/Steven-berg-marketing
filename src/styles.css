@@ -181,9 +181,12 @@ h1,h2,h3 {
   filter: blur(90px);
   opacity: 0.5;
   pointer-events: none;
-  background:
-    radial-gradient(closest-side, rgba(75,142,245,0.75), transparent 70%) 20% 40% / 50% 60% no-repeat,
-    radial-gradient(closest-side, rgba(236,72,153,0.65), transparent 70%) 75% 35% / 45% 55% no-repeat;
+  background-image:
+    radial-gradient(closest-side, rgba(75,142,245,0.75), transparent 70%),
+    radial-gradient(closest-side, rgba(236,72,153,0.65), transparent 70%);
+  background-size: 50% 60%, 45% 55%;
+  background-repeat: no-repeat;
+  background-position: 20% 40%, 75% 30%;
 }
 .hero__grid {
   display: grid;
